@@ -10,20 +10,12 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT || 3000
 
-const cors = require('cors')
-
-app.use(
-  cors({
-    origin: 'https://barista-task.netlify.app', // Allow your Netlify frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  }),
-)
-
 app.use(express.json())
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || 'https://barista-task.netlify.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 )
 
