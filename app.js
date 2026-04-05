@@ -1,35 +1,45 @@
-import dotenv from "dotenv";
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import taskRouter from "./routes/task.js";
-import userRouter from "./routes/user.js";
+import dotenv from 'dotenv'
+import express from 'express'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import taskRouter from './routes/task.js'
+import userRouter from './routes/user.js'
 
-dotenv.config();
+dotenv.config()
 
-const app = express();
-const port = process.env.PORT || 3000;
+const app = express()
+const port = process.env.PORT || 3000
 
-app.use(express.json());
+const cors = require('cors')
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://your-netlify-app.netlify.app",
+    origin: 'https://barista-task.netlify.app', // Allow your Netlify frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   }),
-);
+)
 
-app.use("/task", taskRouter);
-app.use("/user", userRouter);
+app.use(express.json())
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'https://barista-task.netlify.app',
+  }),
+)
+
+app.use('/task', taskRouter)
+app.use('/user', userRouter)
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
-    console.log("Connected to db");
+    await mongoose.connect(process.env.MONGO_URL)
+    console.log('Connected to db')
   } catch (error) {
-    console.error("Error connecting to db", error);
+    console.error('Error connecting to db', error)
   }
-};
+}
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-  connectDB();
-});
+  console.log(`Server running at http://localhost:${port}`)
+  connectDB()
+})
